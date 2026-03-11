@@ -1,0 +1,38 @@
+import mongoose from 'mongoose';
+
+const reviewSchema = new mongoose.Schema(
+  {
+    reviewerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    sellerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    orderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Order',
+      required: true,
+      unique: true, // one review per order
+    },
+    rating: {
+      type: Number,
+      required: [true, 'Rating is required'],
+      min: [1, 'Rating must be at least 1'],
+      max: [5, 'Rating cannot exceed 5'],
+    },
+    comment: {
+      type: String,
+      trim: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const Review = mongoose.model('Review', reviewSchema);
+export default Review;
