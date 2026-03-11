@@ -1,12 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
 const SocketContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSocketContext = () => {
   return useContext(SocketContext);
 };
 
+// eslint-disable-next-line react/prop-types
 export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -40,6 +42,7 @@ export const SocketContextProvider = ({ children }) => {
         setSocket(null);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Note: typically you'd add token or auth state to this dependency array if using real AuthContext
 
   const isUserOnline = (userId) => {

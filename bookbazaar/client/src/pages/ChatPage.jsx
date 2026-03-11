@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSocketContext } from '../../context/SocketContext';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 
 const ChatPage = () => {
   const { user } = useAuth();
-  const { socket, onlineUsers, isUserOnline } = useSocketContext();
+  const { socket, isUserOnline } = useSocketContext();
   
   const [conversations, setConversations] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
