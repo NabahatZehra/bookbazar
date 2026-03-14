@@ -120,19 +120,11 @@ export const createBook = async (req, res) => {
 
     const { title, author, description, price, condition, university, course } = req.body;
 
-    let imageUrl = '';
-    // If a file was uploaded via multer, send it to Cloudinary
-    if (req.file) {
-      // Convert buffer string to base64 DataURI to upload streamlessly using straightforward SDK call
-      const b64 = Buffer.from(req.file.buffer).toString('base64');
-      const dataURI = `data:${req.file.mimetype};base64,${b64}`;
-      const uploadResponse = await cloudinary.uploader.upload(dataURI, {
-        folder: 'bookbazaar/books',
-      });
-      imageUrl = uploadResponse.secure_url;
-    } else {
-      return res.status(400).json({ success: false, message: 'Image is required', data: null });
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Image is required. Make sure image size is < 5MB', data: null });
     }
+
+    const imageUrl = req.file.path; // Cloudinary automatically uploads and provides URL in req.file.path
 
     const book = new Book({
       title,
@@ -149,6 +141,7 @@ export const createBook = async (req, res) => {
     const createdBook = await book.save();
     return res.status(201).json({ success: true, message: 'Book listed successfully', data: createdBook });
   } catch (error) {
+    console.error('Error in createBook:', error.message);
     return res.status(500).json({ success: false, message: error.message, data: null });
   }
 };

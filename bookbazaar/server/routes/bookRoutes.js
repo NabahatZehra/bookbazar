@@ -9,7 +9,7 @@ import {
   getSellerBooks,
 } from '../controllers/bookController.js';
 import { protect } from '../middleware/authMiddleware.js';
-import { upload } from '../middleware/uploadMiddleware.js';
+import { upload } from '../config/cloudinary.js';
 
 const router = express.Router();
 
