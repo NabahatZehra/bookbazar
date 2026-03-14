@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCart, MessageCircle, Star, ShieldCheck, MapPin, BookOpen } from 'lucide-react';
 import SEO from '../components/common/SEO';
 import api from '../services/api';
@@ -12,6 +12,7 @@ const BookDetails = () => {
   const navigate = useNavigate();
   const { addToCart, cart } = useCart();
   const { user } = useAuth();
+  const location = useLocation();
   
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -35,8 +36,8 @@ const BookDetails = () => {
 
   const handleAddToCart = () => {
     if (!user) {
-      toast.error('Please login to add to cart');
-      navigate('/login');
+      toast.error('Please login to purchase books');
+      navigate('/login', { state: { from: location.pathname } });
       return;
     }
     
@@ -52,7 +53,7 @@ const BookDetails = () => {
   const handleMessageSeller = () => {
     if (!user) {
       toast.error('Please login to message the seller');
-      navigate('/login');
+      navigate('/login', { state: { from: location.pathname } });
       return;
     }
     // Let ChatPage handle conversation creation upon navigating and selecting the user

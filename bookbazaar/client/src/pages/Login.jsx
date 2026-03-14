@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import SEO from '../components/common/SEO';
 import api from '../services/api';
@@ -11,6 +11,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +26,8 @@ const Login = () => {
       if (res.data.success) {
         login(res.data.data, res.data.token);
         toast.success('Logged in successfully!');
-        navigate('/');
+        const from = location.state?.from || '/';
+        navigate(from);
       }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to login');

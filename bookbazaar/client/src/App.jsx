@@ -6,6 +6,10 @@ import { AuthProvider } from './context/AuthContext';
 import { SocketContextProvider } from './context/SocketContext';
 import { CartProvider } from './context/CartContext';
 
+// Components
+import Navbar from './components/common/Navbar';
+import ProtectedRoute from './components/common/ProtectedRoute';
+
 // Pages
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -26,29 +30,27 @@ function App() {
         <CartProvider>
           <Router>
             <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
-              <header className="bg-white shadow p-4 flex justify-between items-center z-50 relative">
-                <a href="/" className="text-2xl font-bold text-blue-600 tracking-tight">BookBazaar</a>
-                <nav className="hidden md:flex gap-6">
-                  <a href="/" className="text-gray-600 hover:text-blue-600 font-medium">Browse</a>
-                  <a href="/add-book" className="text-gray-600 hover:text-blue-600 font-medium">Sell Book</a>
-                  <a href="/cart" className="text-gray-600 hover:text-blue-600 font-medium">Cart</a>
-                  <a href="/chat" className="text-gray-600 hover:text-blue-600 font-medium">Messages</a>
-                  <a href="/dashboard" className="text-gray-600 hover:text-blue-600 font-medium">Dashboard</a>
-                </nav>
-              </header>
+              <Navbar />
 
               <main className="flex-grow w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
                 <Routes>
+                  {/* Public Routes */}
                   <Route path="/" element={<Home />} />
+                  <Route path="/books" element={<Home />} />
+                  <Route path="/books/:id" element={<BookDetails />} />
+                  <Route path="/book/:id" element={<BookDetails />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
-                  <Route path="/book/:id" element={<BookDetails />} />
-                  <Route path="/add-book" element={<AddBook />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                  <Route path="/chat" element={<ChatPage />} />
-                  <Route path="/dashboard" element={<SellerDashboard />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
+                  
+                  {/* Protected Routes */}
+                  <Route path="/add-book" element={<ProtectedRoute><AddBook /></ProtectedRoute>} />
+                  <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+                  <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                  <Route path="/chat" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
+                  <Route path="/dashboard" element={<ProtectedRoute><SellerDashboard /></ProtectedRoute>} />
+                  <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+                  
+                  {/* 404 Route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
