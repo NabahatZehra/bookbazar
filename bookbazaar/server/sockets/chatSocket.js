@@ -55,13 +55,13 @@ const chatSocket = (io) => {
         });
         const savedMessage = await newMessage.save();
 
-        const room = `conv_${[senderId, receiverId].sort().join('_')}`;
-        
-        // Emit to everyone in the room (including sender to verify delivery)
-        // You could also emit directly to the receiver's socket:
-        // const receiverSocketId = onlineUsers.get(receiverId);
-        // if (receiverSocketId) io.to(receiverSocketId).emit('receive_message', savedMessage);
-        io.to(room).emit('receive_message', savedMessage);
+        // Emit directly to receiver if online (useful for global chat notifications)
+        const receiverSocketId = onlineUsers.get(receiverId.toString());
+        if (receiverSocketId) {
+          io.to(receiverSocketId).emit('receive_message', savedMessage);
+        }
+        // Emit to sender socket so UI updates
+        io.to(socket.id).emit('receive_message', savedMessage);
       } catch (error) {
         console.error('Message save error:', error);
       }
