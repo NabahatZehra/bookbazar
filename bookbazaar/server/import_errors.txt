@@ -1,0 +1,390 @@
+
+Error in config\cloudinary.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in config\db.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in config\stripe.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in controllers\adminController.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in controllers\authController.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in controllers\bookController.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in controllers\chatController.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in controllers\orderController.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in controllers\reviewController.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in middleware\adminMiddleware.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in middleware\authMiddleware.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in middleware\errorHandler.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in middleware\uploadMiddleware.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in models\Book.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in models\Message.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in models\Order.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in models\Review.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in models\Setting.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in models\User.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in routes\adminRoutes.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in routes\authRoutes.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in routes\bookRoutes.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in routes\chatRoutes.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in routes\orderRoutes.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in routes\reviewRoutes.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in server.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in sockets\chatSocket.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in test_api.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in utils\commissionCalculator.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
+
+Error in utils\generateToken.js:
+TypeError [ERR_INVALID_FILE_URL_PATH]: File URL path must be absolute
+    at getPathFromURLWin32 (node:internal/url:1479:11)
+    at fileURLToPath (node:internal/url:1510:35)
+    at finalizeResolution (node:internal/modules/esm/resolve:243:12)
+    at moduleResolve (node:internal/modules/esm/resolve:932:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1056:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:654:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:603:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:586:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:242:38)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:546:36)
