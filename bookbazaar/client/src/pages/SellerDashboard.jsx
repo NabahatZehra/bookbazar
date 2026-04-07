@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { BookOpen, DollarSign, ListOrdered, CheckCircle, Edit, Trash2 } from 'lucide-react';
@@ -8,8 +9,10 @@ import toast from 'react-hot-toast';
 
 const SellerDashboard = () => {
   const { user } = useAuth();
+  const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview'); // overview, listings, sales
+  const [highlightBookId, setHighlightBookId] = useState(null);
   
   const [stats, setStats] = useState({
     totalListed: 0,
@@ -29,7 +32,7 @@ const SellerDashboard = () => {
         // In a real app, you might have an aggregated /api/dashboard/seller endpoint.
         // We'll fetch the individual pieces.
         const [booksRes, salesRes] = await Promise.all([
-          api.get(`/books/user/${user._id}`),
+          api.get(`/books/seller/${user._id}`),
           api.get('/orders/my-sales')
         ]);
         
@@ -70,6 +73,22 @@ const SellerDashboard = () => {
     
     if (user) fetchDashboardData();
   }, [user]);
+
+  useEffect(() => {
+    const id = location.state?.focusBookId;
+    if (id) {
+      setHighlightBookId(String(id));
+      setActiveTab('listings');
+    }
+  }, [location.state?.focusBookId]);
+
+  useEffect(() => {
+    if (!highlightBookId || activeTab !== 'listings') return;
+    const t = window.setTimeout(() => {
+      document.getElementById(`seller-book-${highlightBookId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+    return () => window.clearTimeout(t);
+  }, [highlightBookId, activeTab, myBooks.length]);
 
   const handleDeleteBook = async (id) => {
     if (!window.confirm('Are you sure you want to delete this listing?')) return;
@@ -183,8 +202,14 @@ const SellerDashboard = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {myBooks.map((book) => (
-                  <tr key={book._id} className="hover:bg-gray-50 transition-colors">
+                 {myBooks.map((book) => (
+                  <tr
+                    key={book._id}
+                    id={`seller-book-${book._id}`}
+                    className={`hover:bg-gray-50 transition-colors ${
+                      highlightBookId === String(book._id) ? 'ring-2 ring-inset ring-blue-500 bg-blue-50/50' : ''
+                    }`}
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="h-10 w-10 flex-shrink-0 rounded bg-gray-100 border border-gray-200 overflow-hidden">

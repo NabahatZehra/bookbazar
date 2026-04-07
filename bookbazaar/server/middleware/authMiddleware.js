@@ -20,18 +20,44 @@ export const protect = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Get user from the token and exclude password
-      req.user = await User.findById(decoded.id).select('-password');
+      const user = await User.findById(decoded.id).select('-password');
+      
+      if (!user) {
+        return res.status(401).json({ success: false, message: 'Not authorized, user not found' });
+      }
 
+      if (user.isBanned === true) {
+        return res.status(403).json({ success: false, message: 'Your account has been suspended' });
+      }
+
+      req.user = user;
       next();
     } catch (error) {
       console.error(error);
-      res.status(401);
-      throw new Error('Not authorized, token failed');
+      return res.status(401).json({ success: false, message: 'Not authorized, token failed' });
     }
   }
 
   if (!token) {
-    res.status(401);
-    throw new Error('Not authorized, no token');
+    return res.status(401).json({ success: false, message: 'Not authorized, no token' });
   }
+};
+
+export const optionalAuth = async (req, _res, next) => {
+  try {
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+    if (!token) return next();
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select('-password');
+    if (user && user.isBanned !== true) {
+      req.user = user;
+    }
+  } catch {
+    // Optional auth should never block public requests.
+  }
+  return next();
 };

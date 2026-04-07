@@ -7,8 +7,9 @@ import {
   updateBook,
   deleteBook,
   getSellerBooks,
+  trackBookView,
 } from '../controllers/bookController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { optionalAuth, protect } from '../middleware/authMiddleware.js';
 import { upload } from '../config/cloudinary.js';
 
 const router = express.Router();
@@ -16,6 +17,7 @@ const router = express.Router();
 router.get('/', getBooks);
 router.get('/:id', getBookById);
 router.get('/seller/:sellerId', getSellerBooks);
+router.post('/:id/view', optionalAuth, trackBookView);
 
 // Protected routes
 router.post(

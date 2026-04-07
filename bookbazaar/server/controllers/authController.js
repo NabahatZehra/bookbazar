@@ -26,18 +26,23 @@ export const registerUser = async (req, res) => {
     const errorResponse = handleValidationErrors(req, res);
     if (errorResponse) return;
 
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
+    const normalizedEmail = (email || '').trim().toLowerCase();
 
-    const userExists = await User.findOne({ email });
+    if (normalizedEmail === 'admin@bookbazaar.com' || role === 'admin') {
+      return res.status(403).json({ message: 'Not allowed' });
+    }
+
+    const userExists = await User.findOne({ email: normalizedEmail });
 
     if (userExists) {
       return res.status(400).json({ success: false, message: 'User already exists', data: null });
     }
 
-    const user = await User.create({ name, email, password });
+    const user = await User.create({ name, email: normalizedEmail, password, role: 'user' });
 
     if (user) {
-      const { accessToken, refreshToken } = generateTokens(user._id);
+      const { accessToken, refreshToken } = generateTokens(user);
 
       // Optionally set the refresh token in an HTTP-only cookie
       res.cookie('refreshToken', refreshToken, {
@@ -52,13 +57,13 @@ export const registerUser = async (req, res) => {
         message: 'User registered successfully',
         data: {
           user: {
-            _id: user._id,
+            id: user._id,
             name: user.name,
             email: user.email,
             role: user.role,
             avatar: user.avatar,
           },
-          accessToken,
+          token: accessToken,
           refreshToken,
         },
       });
@@ -85,7 +90,7 @@ export const loginUser = async (req, res) => {
     const user = await User.findOne({ email }).select('+password');
 
     if (user && (await user.matchPassword(password))) {
-      const { accessToken, refreshToken } = generateTokens(user._id);
+      const { accessToken, refreshToken } = generateTokens(user);
 
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
@@ -95,18 +100,12 @@ export const loginUser = async (req, res) => {
       });
 
       return res.json({
-        success: true,
-        message: 'Login successful',
-        data: {
-          user: {
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            avatar: user.avatar,
-          },
-          accessToken,
-          refreshToken,
+        token: accessToken,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
         },
       });
     } else {
@@ -151,6 +150,63 @@ export const logoutUser = async (req, res) => {
       expires: new Date(0),
     });
     return res.json({ success: true, message: 'Logged out successfully', data: null });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message, data: null });
+  }
+};
+
+/**
+ * @desc    Toggle item in wishlist
+ * @route   POST /api/auth/wishlist
+ * @access  Private
+ */
+export const toggleWishlist = async (req, res) => {
+  try {
+    const { bookId } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found', data: null });
+    }
+
+    const isLiked = user.wishlist.some(id => id.toString() === bookId.toString());
+
+    if (isLiked) {
+      user.wishlist = user.wishlist.filter(id => id.toString() !== bookId.toString());
+    } else {
+      user.wishlist.push(bookId);
+    }
+
+    await user.save();
+
+    return res.json({
+      success: true,
+      message: isLiked ? 'Removed from wishlist' : 'Added to wishlist',
+      data: user.wishlist,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message, data: null });
+  }
+};
+
+/**
+ * @desc    Get user wishlist
+ * @route   GET /api/auth/wishlist
+ * @access  Private
+ */
+export const getWishlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).populate('wishlist');
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found', data: null });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Wishlist fetched successfully',
+      data: user.wishlist,
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message, data: null });
   }

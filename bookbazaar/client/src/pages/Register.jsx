@@ -34,7 +34,12 @@ const Register = () => {
     try {
       const res = await api.post('/auth/register', formData);
       if (res.data.success) {
-        login(res.data.data, res.data.token);
+        const authUser = res.data.data?.user;
+        const authToken = res.data.data?.token;
+        if (!authUser || !authToken) {
+          throw new Error('Invalid register response');
+        }
+        login({ token: authToken, user: authUser });
         toast.success('Account created successfully!');
         navigate('/');
       }

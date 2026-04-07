@@ -23,12 +23,19 @@ const Login = () => {
     setLoading(true);
     try {
       const res = await api.post('/auth/login', { email, password });
-      if (res.data.success) {
-        login(res.data.data, res.data.token);
-        toast.success('Logged in successfully!');
-        const from = location.state?.from || '/';
-        navigate(from);
+      const authUser = res.data?.user;
+      const authToken = res.data?.token;
+      if (!authUser || !authToken) {
+        throw new Error('Invalid login response');
       }
+      login({ token: authToken, user: authUser });
+      toast.success('Logged in successfully!');
+      
+      let from = location.state?.from || '/';
+      if (authUser.role === 'admin') {
+        from = '/admin/dashboard';
+      }
+      navigate(from);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to login');
     } finally {

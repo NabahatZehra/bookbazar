@@ -6,6 +6,8 @@ import {
   loginUser,
   getUserProfile,
   logoutUser,
+  toggleWishlist,
+  getWishlist,
 } from '../controllers/authController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -41,5 +43,9 @@ router.post(
 
 router.post('/logout', logoutUser);
 router.get('/me', protect, getUserProfile); // Uses the protect middleware
+
+// Wishlist routes
+router.post('/wishlist', protect, toggleWishlist);
+router.get('/wishlist', protect, getWishlist);
 
 export default router;

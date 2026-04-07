@@ -47,12 +47,55 @@ const bookSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['available', 'sold'],
+      enum: ['available', 'sold', 'removed'],
       default: 'available',
+    },
+    educationMeta: {
+      level: {
+        type: String,
+        enum: ['primary', 'secondary', 'higher_secondary', 'university', 'general'],
+        default: 'general',
+      },
+      grade: { type: Number, min: 1, max: 12, default: null },
+      subject: { type: String, default: null },
+      field: { type: String, default: null },
+      semester: { type: Number, default: null },
+      board: { type: String, default: null },
+      tags: [{ type: String }],
     },
     views: {
       type: Number,
       default: 0,
+    },
+    seoTitle: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    seoDescription: {
+      type: String,
+      trim: true,
+      default: '',
+      maxLength: 160,
+    },
+    seoKeywords: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    canonicalUrl: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    ogImage: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    structuredData: {
+      type: Object,
+      default: {},
     },
   },
   {

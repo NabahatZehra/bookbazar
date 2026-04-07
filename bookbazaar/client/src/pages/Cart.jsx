@@ -13,14 +13,7 @@ const Cart = () => {
   const calculateTotals = () => {
     const subtotal = cart.reduce((total, item) => total + item.price, 0);
     const platformFee = subtotal * commissionRate;
-    // Buyer pays the list price, seller gets (price - commission)
-    // If the platform adds fee ON TOP of the list price, it would be subtotal + platformFee
-    // Assuming BookBazaar deducts from seller's payout instead of adding to buyer's cost for this UI,
-    // but the prompt asked to show: Book Price X, Platform Fee Y, You Pay Z.
-    // Let's assume the buyer pays the commission explicitly for transparency as requested:
-    // const buyerPays = subtotal + platformFee;
-
-    return { subtotal, platformFee /*, total: buyerPays */ };
+    return { subtotal, platformFee };
   };
 
   const { subtotal, platformFee } = calculateTotals();
@@ -114,11 +107,11 @@ const Cart = () => {
                 </div>
                 <div className="flex justify-between items-center text-gray-600">
                    <p className="flex items-center gap-1.5">
-                     Platform Fee (10%)
+                     Platform fee (from seller)
                      <div className="group relative">
                         <span className="w-4 h-4 rounded-full bg-gray-200 flex items-center justify-center text-[10px] font-bold cursor-help">?</span>
-                        <div className="absolute bottom-full right-0 mb-2 w-48 bg-gray-900 text-white text-xs p-2 rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                          Helps us maintain the platform and secure transactions.
+                        <div className="absolute bottom-full right-0 mb-2 w-52 bg-gray-900 text-white text-xs p-2 rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                          This fee is deducted from the seller&apos;s payout. You are charged the book prices only (same as checkout).
                         </div>
                      </div>
                    </p>
@@ -129,8 +122,11 @@ const Cart = () => {
               <div className="border-t border-gray-200 pt-4 mb-8">
                 <div className="flex justify-between items-center">
                   <p className="text-lg font-bold text-gray-900">You Pay</p>
-                  <p className="text-2xl font-black text-blue-600">Rs. {(subtotal + platformFee).toLocaleString()}</p>
+                  <p className="text-2xl font-black text-blue-600">Rs. {subtotal.toLocaleString()}</p>
                 </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Total charged at checkout = <strong>Rs. {subtotal.toLocaleString()}</strong> (subtotal only).
+                </p>
               </div>
 
               <button 

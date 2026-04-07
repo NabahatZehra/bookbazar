@@ -23,3 +23,4 @@ Re-optimizing dependencies because lockfile has changed
 [2m1:49:36 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/BookDetails.jsx, /src/index.css[22m
 [2m1:51:47 am[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/common/ProtectedRoute.jsx[22m
 [2m1:51:49 am[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/components/common/Navbar.jsx[22m
+^C

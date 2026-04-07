@@ -34,6 +34,36 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: 'https://via.placeholder.com/150', // placeholder URL
     },
+    educationProfile: {
+      level: {
+        type: String,
+        enum: ['primary', 'secondary', 'higher_secondary', 'university', 'other'],
+        default: null,
+      },
+      currentGrade: { type: Number, min: 1, max: 12, default: null },
+      university: { type: String, default: null },
+      degree: { type: String, default: null },
+      field: { type: String, default: null },
+      semester: { type: Number, min: 1, max: 8, default: null },
+      board: { type: String, default: null },
+      institution: { type: String, default: null },
+      isProfileComplete: { type: Boolean, default: false },
+    },
+    purchaseHistory: [
+      {
+        bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
+        grade: { type: Number, default: null },
+        field: { type: String, default: null },
+        subject: { type: String, default: null },
+        purchasedAt: { type: Date, default: Date.now },
+      },
+    ],
+    viewedBooks: [
+      {
+        bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
+        viewedAt: { type: Date, default: Date.now },
+      },
+    ],
     averageRating: {
       type: Number,
       default: 0,
@@ -42,6 +72,34 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    isBanned: {
+      type: Boolean,
+      default: false,
+    },
+    wishlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Book',
+      },
+    ],
+    // Used by the AI recommendation agent (optional; can be empty).
+    university: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    course: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    // Last books the user viewed (most recent first). Used for AI recommendations.
+    recentlyViewedBooks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Book',
+      },
+    ],
   },
   {
     timestamps: true, // Automates createdAt and updatedAt

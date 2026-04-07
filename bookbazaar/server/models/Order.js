@@ -46,6 +46,13 @@ const orderSchema = new mongoose.Schema(
     stripePaymentIntentId: {
       type: String,
     },
+    deliveryInfo: {
+      fullName: { type: String, default: '' },
+      phone: { type: String, default: '' },
+      addressLine1: { type: String, default: '' },
+      city: { type: String, default: '' },
+      notes: { type: String, default: '' },
+    },
   },
   {
     timestamps: true,

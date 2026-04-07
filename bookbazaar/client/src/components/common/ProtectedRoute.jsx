@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 
 // eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 

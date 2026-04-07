@@ -14,11 +14,7 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // If the data is FormData, let the browser define Content-Type with correct boundaries
-    if (config.data instanceof FormData) {
-      delete config.headers['Content-Type'];
-    }
-
+    // No Content-Type tampering needed. Axios automatically serializes FormData.
     return config;
   },
   (error) => {
@@ -31,9 +27,15 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Logic to trigger logout or refresh token could go here
-      console.warn('Unauthorized! Token may be expired.');
-      // e.g., localStorage.removeItem('token'); window.location.href = '/login';
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      const path = window.location.pathname;
+      const isAdminArea = path.startsWith('/admin') && path !== '/admin/login';
+      if (isAdminArea) {
+        window.location.href = '/admin/login';
+      } else if (path !== '/login' && path !== '/register') {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

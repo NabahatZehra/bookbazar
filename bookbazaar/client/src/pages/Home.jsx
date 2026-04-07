@@ -1,13 +1,28 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Search, Filter } from 'lucide-react';
 import SEO from '../components/common/SEO';
 import api from '../services/api';
+import SmartSearchBar from '../components/search/SmartSearchBar';
+import AIRecommendations from '../components/recommendations/AIRecommendations';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+  const { isAuthenticated } = useAuth();
+  const [searchParams] = useSearchParams();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [personalized, setPersonalized] = useState([]);
+  const [recommendReason, setRecommendReason] = useState('');
+  const [recommendProfile, setRecommendProfile] = useState(null);
+  const [recommendSubjects, setRecommendSubjects] = useState([]);
+  const [recommendNextGrade, setRecommendNextGrade] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalBooks, setTotalBooks] = useState(0);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
   
   // Filters
   const [filters, setFilters] = useState({
@@ -17,20 +32,30 @@ const Home = () => {
     maxPrice: ''
   });
 
-  const fetchBooks = async () => {
+  const fetchBooks = async (overrideSearchTerm, page = currentPage, overrideCategory = selectedCategory) => {
     setLoading(true);
     try {
+      const effectiveSearchTerm =
+        typeof overrideSearchTerm === 'string' ? overrideSearchTerm : searchTerm;
+
       // Build query string based on filters
       const params = new URLSearchParams();
-      if (searchTerm) params.append('search', searchTerm);
+      if (effectiveSearchTerm) params.append('search', effectiveSearchTerm);
       if (filters.condition) params.append('condition', filters.condition);
       if (filters.university) params.append('university', filters.university);
       if (filters.minPrice) params.append('minPrice', filters.minPrice);
       if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
+      if (overrideCategory) params.append('category', overrideCategory);
+      params.append('page', String(page));
+      params.append('limit', '9');
 
       const res = await api.get(`/books?${params.toString()}`);
       if (res.data.success) {
-        setBooks(res.data.data.docs || res.data.data); // Adjust based on pagination setup
+        const booksPayload = res.data.data?.books || res.data.data?.docs || [];
+        setBooks(Array.isArray(booksPayload) ? booksPayload : []);
+        setCurrentPage(Number(res.data.data?.page || page));
+        setTotalPages(Number(res.data.data?.pages || 1));
+        setTotalBooks(Number(res.data.data?.total || booksPayload.length || 0));
       }
     } catch (err) {
       console.error('Failed to fetch books', err);
@@ -40,17 +65,48 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchBooks();
+    const urlSearch = searchParams.get('search') || '';
+    const urlCategory = searchParams.get('category') || '';
+    const pageFromUrl = Number(searchParams.get('page') || 1);
+    setSearchTerm(urlSearch);
+    setSelectedCategory(urlCategory);
+    setCurrentPage(pageFromUrl > 0 ? pageFromUrl : 1);
+    void fetchBooks(urlSearch, pageFromUrl > 0 ? pageFromUrl : 1, urlCategory);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchParams]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    fetchBooks();
-  };
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      if (!isAuthenticated) return;
+      try {
+        const res = await api.get('/recommendations');
+        if (res.data?.success) {
+          setPersonalized(res.data.books || []);
+          setRecommendReason(res.data.reason || '');
+          setRecommendProfile(res.data.profile || null);
+          setRecommendSubjects(res.data.subjects || []);
+          setRecommendNextGrade(res.data.nextGrade || null);
+        }
+      } catch {
+        setPersonalized([]);
+      }
+    };
+    void fetchRecommendations();
+  }, [isAuthenticated]);
 
   const handleFilterChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
+  };
+
+  const applyFilters = () => {
+    setCurrentPage(1);
+    void fetchBooks(undefined, 1);
+    setShowMobileFilters(false);
+  };
+
+  const goToPage = (page) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    void fetchBooks(undefined, page);
   };
 
   return (
@@ -70,19 +126,15 @@ const Home = () => {
             Save money on course materials. Trade directly with students on your campus.
           </p>
           
-          <form onSubmit={handleSearch} className="flex bg-white rounded-full shadow-lg p-1.5 md:p-2 max-w-2xl mx-auto items-center transition-all focus-within:ring-4 focus-within:ring-blue-500/30">
-            <input 
-              type="text" 
-              placeholder="Search by title, author, or ISBN..." 
-              className="flex-grow px-4 md:px-6 py-3 text-gray-800 bg-transparent focus:outline-none placeholder-gray-400 text-sm md:text-base font-medium transition-all"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-3 md:py-3.5 font-medium flex items-center gap-2 transition-colors">
-              <Search size={18} />
-              <span className="hidden sm:inline">Search</span>
-            </button>
-          </form>
+          <SmartSearchBar
+            value={searchTerm}
+            onChange={setSearchTerm}
+            onSearch={(q) => {
+              setSearchTerm(q);
+              setCurrentPage(1);
+              void fetchBooks(q, 1);
+            }}
+          />
         </div>
         
         {/* Decorative background vectors */}
@@ -90,9 +142,22 @@ const Home = () => {
         <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-blue-400 opacity-20 rounded-full blur-3xl"></div>
       </section>
 
+      <AIRecommendations />
+
+      <div className="mb-4 md:hidden">
+        <button
+          type="button"
+          onClick={() => setShowMobileFilters((prev) => !prev)}
+          className="w-full inline-flex items-center justify-center gap-2 bg-white border border-gray-200 rounded-lg py-2.5 font-semibold text-gray-700"
+        >
+          <Filter size={16} />
+          {showMobileFilters ? 'Hide Filters' : 'Show Filters'}
+        </button>
+      </div>
+
       <div className="flex flex-col md:flex-row gap-8">
         {/* Sidebar Filters */}
-        <aside className="w-full md:w-64 flex-shrink-0">
+        <aside className={`w-full md:w-64 flex-shrink-0 ${showMobileFilters ? 'block' : 'hidden md:block'}`}>
           <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 sticky top-24">
             <div className="flex items-center gap-2 font-bold text-gray-800 mb-6 border-b pb-4">
               <Filter size={18} className="text-blue-600" />
@@ -151,7 +216,7 @@ const Home = () => {
               </div>
 
               <button 
-                onClick={fetchBooks}
+                onClick={applyFilters}
                 className="w-full bg-gray-900 text-white font-medium py-2.5 rounded-lg hover:bg-gray-800 transition-colors shadow-sm mt-4"
               >
                 Apply Filters
@@ -161,16 +226,16 @@ const Home = () => {
         </aside>
 
         {/* Main Content - Book Grid */}
-        <div className="flex-grow">
+        <div className="flex-grow min-w-0">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800">
               {searchTerm || Object.values(filters).some(x => x) ? 'Search Results' : 'Featured Books'}
             </h2>
-            <span className="text-gray-500 text-sm font-medium">{books.length} items found</span>
+            <span className="text-gray-500 text-sm font-medium">{totalBooks} items found</span>
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                 <div key={n} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-pulse">
                   <div className="h-48 bg-gray-200"></div>
@@ -186,7 +251,7 @@ const Home = () => {
               ))}
             </div>
           ) : books.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
               {books.map((book) => (
                  <div key={book._id} className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col group">
                    <Link to={`/book/${book._id}`} className="block relative overflow-hidden aspect-[3/4]">
@@ -232,7 +297,8 @@ const Home = () => {
                 onClick={() => {
                   setSearchTerm('');
                   setFilters({ condition: '', university: '', minPrice: '', maxPrice: '' });
-                  fetchBooks();
+                  setCurrentPage(1);
+                  void fetchBooks('', 1);
                 }}
                 className="mt-6 text-blue-600 font-medium hover:text-blue-700"
               >
@@ -241,18 +307,67 @@ const Home = () => {
             </div>
           )}
           
-          {/* Mock Pagination */}
+          {/* Real Pagination */}
           {!loading && books.length > 0 && (
             <div className="mt-10 flex justify-center">
-              <nav className="flex items-center gap-1">
-                <button className="px-3 py-1.5 rounded-lg border text-sm font-medium hover:bg-gray-50 text-gray-500 disabled:opacity-50">Previous</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white text-sm font-bold shadow-sm">1</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded-lg border text-gray-600 hover:bg-gray-50 text-sm font-medium">2</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded-lg border text-gray-600 hover:bg-gray-50 text-sm font-medium">3</button>
-                <button className="px-3 py-1.5 rounded-lg border text-sm font-medium hover:bg-gray-50 text-gray-700">Next</button>
+              <nav className="flex items-center gap-1 flex-wrap justify-center">
+                <button
+                  type="button"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1.5 rounded-lg border text-sm font-medium hover:bg-gray-50 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+                  .map((p) => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => goToPage(p)}
+                      className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-medium ${
+                        p === currentPage
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'border text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                <button
+                  type="button"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1.5 rounded-lg border text-sm font-medium hover:bg-gray-50 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
               </nav>
             </div>
           )}
+
+          <div className="mt-12 space-y-8">
+            <section className="bg-white rounded-xl border border-gray-100 p-5">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-xl font-bold text-gray-900">
+                  Recommended For You
+                </h3>
+                <Link to="/books" className="text-sm font-semibold text-blue-600 hover:text-blue-700">View All</Link>
+              </div>
+              {!isAuthenticated && <p className="text-sm text-gray-600 mb-3">Sign in to get personalized recommendations.</p>}
+              <div className="flex gap-4 overflow-x-auto pb-2">
+                {(isAuthenticated ? personalized.slice(0, 8) : books.slice(0, 8)).map((book) => (
+                  <Link key={book._id} to={`/book/${book._id}`} className="min-w-[220px] max-w-[220px] border rounded-lg p-3 hover:shadow">
+                    <img src={book.image} alt={book.title} className="w-full h-32 object-cover rounded" />
+                    <div className="mt-2 font-semibold line-clamp-1">{book.title}</div>
+                    <div className="text-sm text-gray-500 line-clamp-1">{book.author}</div>
+                    <div className="text-sm font-bold mt-1">Rs. {book.price}</div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </div>
         </div>
       </div>
     </div>

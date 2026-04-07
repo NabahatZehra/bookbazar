@@ -4,10 +4,12 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { Send, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
+import { useParams } from 'react-router-dom';
 
 const ChatPage = () => {
   const { user } = useAuth();
   const { socket, isUserOnline } = useSocketContext();
+  const { userId } = useParams();
   
   const [conversations, setConversations] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -33,6 +35,19 @@ const ChatPage = () => {
     };
     if (user) fetchConversations();
   }, [user]);
+
+  // If navigated from OrderConfirmation / BookDetails, auto-select the conversation.
+  useEffect(() => {
+    if (!userId) return;
+    if (!conversations || conversations.length === 0) return;
+    const found = conversations.find(
+      (conv) => conv.user?._id?.toString() === userId.toString()
+    );
+    if (found?.user) {
+      setSelectedUser(found.user);
+      setShowConversations(false);
+    }
+  }, [userId, conversations]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -261,7 +276,7 @@ const ChatPage = () => {
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50">
               {messages.map((msg, index) => {
-                const isMine = msg.senderId === user._id;
+                const isMine = String(msg.senderId) === String(user.id || user._id);
                 const showDate = index === 0 || new Date(messages[index - 1].timestamp).toDateString() !== new Date(msg.timestamp).toDateString();
                 
                 return (

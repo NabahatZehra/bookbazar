@@ -46,7 +46,9 @@ export const SocketContextProvider = ({ children }) => {
   }, []); // Note: typically you'd add token or auth state to this dependency array if using real AuthContext
 
   const isUserOnline = (userId) => {
-    return onlineUsers.includes(userId);
+    if (!userId) return false;
+    const id = userId.toString ? userId.toString() : String(userId);
+    return onlineUsers.includes(id);
   };
 
   return (
