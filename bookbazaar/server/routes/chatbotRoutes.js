@@ -2,6 +2,7 @@
 import Book from '../models/Book.js';
 import express from 'express';
 import User from '../models/User.js';
+import Order from '../models/Order.js';
 import { optionalAuth } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -151,7 +152,6 @@ const detectSupportIntent = (message) => {
   const intents = {
     selling: /\b(how to sell|sell|list a book|add book|post a book|i want to sell)\b/i,
     account: /\b(login|log in|signup|sign up|register|account)\b/i,
-    order: /\b(order|my order|track|purchase)\b/i,
     price: /\b(price|how much|cost|fee)\b/i,
   };
   if (intents.selling.test(lower)) {
@@ -168,13 +168,6 @@ const detectSupportIntent = (message) => {
       cta: null,
     };
   }
-  if (intents.order.test(lower)) {
-    return {
-      intentType: 'order',
-      reply: 'You can view your orders in your Profile page.',
-      cta: { label: 'Go to Profile', path: '/profile' },
-    };
-  }
   if (intents.price.test(lower)) {
     return {
       intentType: 'price',
@@ -182,6 +175,101 @@ const detectSupportIntent = (message) => {
       cta: null,
     };
   }
+  return null;
+};
+
+const buildOrderTimeline = (order) => {
+  const status = String(order?.orderStatus || 'Pending');
+  const created = order?.createdAt ? new Date(order.createdAt).toLocaleString() : null;
+  const paid = order?.paymentStatus === 'Paid' ? 'Payment received' : 'Payment pending';
+  if (status === 'Completed') return `${paid} -> Processing -> Completed${created ? ` (${created})` : ''}`;
+  if (status === 'Cancelled') return `${paid} -> Cancelled${created ? ` (${created})` : ''}`;
+  if (status === 'Processing') return `${paid} -> Processing${created ? ` (${created})` : ''}`;
+  return `${paid} -> Pending${created ? ` (${created})` : ''}`;
+};
+
+const detectFaqIntent = (message) => {
+  const lower = String(message || '').toLowerCase();
+  if (/\b(shipping|delivery|deliver|ship)\b/.test(lower)) {
+    return {
+      intentType: 'faq_shipping',
+      reply: 'Shipping usually takes 2-5 business days depending on city. You can track updates from your Orders page once the seller dispatches.',
+      cta: { label: 'Go to Orders', path: '/orders' },
+    };
+  }
+  if (/\b(return|refund|exchange)\b/.test(lower)) {
+    return {
+      intentType: 'faq_return',
+      reply: 'If a delivered book is not as described, contact the seller from Messages and raise a return/refund request with your order details.',
+      cta: { label: 'Open Messages', path: '/messages' },
+    };
+  }
+  if (/\b(payment|pay|card|stripe|method)\b/.test(lower)) {
+    return {
+      intentType: 'faq_payment',
+      reply: 'At checkout, you can place orders using the available payment flow on BookBazaar. Buyers pay listed price; platform fee is deducted from seller payout.',
+      cta: { label: 'Go to Cart', path: '/cart' },
+    };
+  }
+  return null;
+};
+
+const handleCommerceIntent = async (message, userId) => {
+  const lower = String(message || '').toLowerCase();
+
+  if (/\b(where is my order|track order|track my order|order status|my order)\b/.test(lower)) {
+    if (!userId) {
+      return {
+        intentType: 'order_tracking',
+        reply: 'Please log in first, then I can check your live order status.',
+        cta: { label: 'Login', path: '/login' },
+      };
+    }
+    const orders = await Order.find({ buyerId: userId })
+      .populate('bookId', 'title')
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .lean();
+    if (!orders.length) {
+      return {
+        intentType: 'order_tracking',
+        reply: 'I could not find any orders yet. Once you place an order, tracking will appear in your Orders page.',
+        cta: { label: 'Browse Books', path: '/books' },
+      };
+    }
+    const lines = orders.map((o, i) => `${i + 1}. ${o.bookId?.title || 'Book'} - ${buildOrderTimeline(o)}`);
+    return {
+      intentType: 'order_tracking',
+      reply: `Here is your latest order tracking:\n${lines.join('\n')}`,
+      cta: { label: 'Go to Orders', path: '/orders' },
+    };
+  }
+
+  if (/\b(add to cart|remove from cart|cart|checkout|coupon|discount code|abandon(ed)? cart)\b/.test(lower)) {
+    return {
+      intentType: 'cart_checkout_help',
+      reply: "I can help with cart and checkout:\n1. Open your Cart to add/remove items\n2. Proceed to Checkout for delivery/payment\n3. Coupon support can be added next if you want.",
+      cta: { label: 'Open Cart', path: '/cart' },
+    };
+  }
+
+  if (/\b(recommend|suggest|trending|customers also bought|best books for me)\b/.test(lower)) {
+    const books = await Book.find({ status: 'available' })
+      .sort({ views: -1, createdAt: -1 })
+      .limit(8)
+      .select('_id title author price condition university course image educationMeta')
+      .lean();
+    return {
+      intentType: 'recommendations',
+      reply: books.length
+        ? `I found ${books.length} recommendations for you.`
+        : 'I could not find recommendations right now. Try browsing latest listings.',
+      books,
+      hasBooks: books.length > 0,
+      cta: books.length ? { label: 'View All Books', path: '/books' } : null,
+    };
+  }
+
   return null;
 };
 
@@ -403,6 +491,20 @@ router.post('/message', optionalAuth, async (req, res) => {
     }
 
     const cleanMessage = String(message).trim();
+    const faqIntent = detectFaqIntent(cleanMessage);
+    if (faqIntent) {
+      return res.json({
+        success: true,
+        reply: faqIntent.reply,
+        books: [],
+        hasBooks: false,
+        filtersUsed: {},
+        isBookSearch: false,
+        intentType: faqIntent.intentType,
+        cta: faqIntent.cta || null,
+      });
+    }
+
     const supportIntent = detectSupportIntent(cleanMessage);
     if (supportIntent) {
       return res.json({
@@ -414,6 +516,20 @@ router.post('/message', optionalAuth, async (req, res) => {
         isBookSearch: false,
         intentType: supportIntent.intentType,
         cta: supportIntent.cta,
+      });
+    }
+
+    const commerceIntent = await handleCommerceIntent(cleanMessage, req.user?._id);
+    if (commerceIntent) {
+      return res.json({
+        success: true,
+        reply: commerceIntent.reply,
+        books: commerceIntent.books || [],
+        hasBooks: Boolean(commerceIntent.hasBooks),
+        filtersUsed: {},
+        isBookSearch: false,
+        intentType: commerceIntent.intentType,
+        cta: commerceIntent.cta || null,
       });
     }
     const userProfile = req.user?._id
